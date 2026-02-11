@@ -1,0 +1,57 @@
+from flask import Flask, request, jsonify
+from project_service import create_project, delete_project, project_status
+from docker_service import list_containers, get_container_logs
+
+app = Flask(__name__)
+
+
+@app.route("/create", methods=["POST"])
+def create():
+    """
+    Create a new docker project.
+    """
+
+    data = request.json
+    project_name = data.get("project_name")
+    compose_source = data.get("compose_source")
+
+    result = create_project(project_name, compose_source)
+    return jsonify(result)
+
+
+@app.route("/delete/<project_name>", methods=["DELETE"])
+def delete(project_name):
+    """
+    Delete docker project.
+    """
+
+    result = delete_project(project_name)
+    return jsonify(result)
+
+
+@app.route("/status", methods=["GET"])
+def status():
+    """
+    List running containers.
+    """
+
+    containers = list_containers()
+    container_names = [container.name for container in containers]
+
+    return jsonify(container_names)
+
+
+@app.route("/logs/<container_name>", methods=["GET"])
+def logs(container_name):
+    """
+    Return logs of a container.
+    """
+
+    lines = request.args.get("lines", default=100, type=int)
+    logs_output = get_container_logs(container_name, lines)
+
+    return logs_output.decode("utf-8")
+
+
+if __name__ == "__main__":
+    app.run(port=5000)
