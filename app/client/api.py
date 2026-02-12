@@ -14,6 +14,17 @@ def create_project(project_name: str, compose_source: str):
 
     return requests.post(f"{SERVER_URL}/create", json=payload)
 
+def modify_project(project_name: str, compose_source: str):
+    """
+    Send request to modify project.
+    """
+
+    payload = {
+        "project_name": project_name,
+        "compose_source": compose_source
+    }
+
+    return requests.post(f"{SERVER_URL}/modify", json=payload)
 
 def delete_project(project_name: str):
     """
@@ -30,6 +41,12 @@ def get_status():
 
     return requests.get(f"{SERVER_URL}/status")
 
+def get_allstatus():
+    """
+    Get all containers.
+    """
+
+    return requests.get(f"{SERVER_URL}/allstatus")
 
 def get_logs(container_name: str, lines: int):
     """
@@ -40,3 +57,10 @@ def get_logs(container_name: str, lines: int):
         f"{SERVER_URL}/logs/{container_name}",
         params={"lines": lines}
     )
+
+def get_projects():
+    """
+    Get list of projects from server.
+    """
+
+    return requests.get(f"{SERVER_URL}/projects")

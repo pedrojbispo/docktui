@@ -10,6 +10,11 @@ def list_containers():
     """
     return docker_client.containers.list()
 
+def list_allcontainers():
+    """
+    Return list of running containers.
+    """
+    return docker_client.containers.list(all)
 
 def get_container_logs(container_name: str, lines: int):
     """

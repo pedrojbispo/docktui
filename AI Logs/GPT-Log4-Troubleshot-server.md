@@ -238,4 +238,4 @@ python -m pip show flask
 
 e eu digo-te exatamente onde está o problema.
 
-NOTA: Erro meu este prompt foi desnessario.
+NOTA: Erro meu este chat foi desnessario.
