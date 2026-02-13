@@ -30,3 +30,38 @@ def get_container_status(container_name: str):
     """
     container = docker_client.containers.get(container_name)
     return container.status
+
+def start_container(container_name: str):
+    """
+    Start a stopped container.
+    """
+    try:
+        container = docker_client.containers.get(container_name)
+        container.start()
+        return {"status": "started", "container": container_name}
+    except Exception as error:
+        return {"error": str(error)}
+
+
+def stop_container(container_name: str):
+    """
+    Stop a running container.
+    """
+    try:
+        container = docker_client.containers.get(container_name)
+        container.stop()
+        return {"status": "stopped", "container": container_name}
+    except Exception as error:
+        return {"error": str(error)}
+
+
+def restart_container(container_name: str):
+    """
+    Restart a container.
+    """
+    try:
+        container = docker_client.containers.get(container_name)
+        container.restart()
+        return {"status": "restarted", "container": container_name}
+    except Exception as error:
+        return {"error": str(error)}

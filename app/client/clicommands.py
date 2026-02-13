@@ -1,4 +1,4 @@
-from api import create_project, modify_project, delete_project, get_status, get_allstatus, get_logs, get_projects
+from api import create_project, modify_project, delete_project, get_status, get_allstatus, get_logs, get_projects, start_container, stop_container, restart_container
 
 
 def command_create(project_name: str, compose_source: str):
@@ -74,3 +74,38 @@ def command_list_projects():
     print("\nExisting projects:")
     for index, project in enumerate(projects):
         print(f"{index + 1} - {project}")
+
+def command_start(container_name: str):
+    """
+    CLI start container command.
+    """
+    response = start_container(container_name)
+
+    if response.status_code != 200:
+        print("Error:", response.json())
+    else:
+        print(response.json())
+
+
+def command_stop(container_name: str):
+    """
+    CLI stop container command.
+    """
+    response = stop_container(container_name)
+
+    if response.status_code != 200:
+        print("Error:", response.json())
+    else:
+        print(response.json())
+
+
+def command_restart(container_name: str):
+    """
+    CLI restart container command.
+    """
+    response = restart_container(container_name)
+
+    if response.status_code != 200:
+        print("Error:", response.json())
+    else:
+        print(response.json())

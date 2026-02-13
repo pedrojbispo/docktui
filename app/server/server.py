@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from project_service import create_project, modify_project , delete_project, project_status, list_projects
-from docker_service import list_containers, list_allcontainers, get_container_logs
+from docker_service import list_containers, list_allcontainers, get_container_logs, start_container, stop_container, restart_container
 
 app = Flask(__name__)
 
@@ -88,6 +88,36 @@ def projects():
 
     project_list = list_projects()
     return jsonify(project_list)
+
+@app.route("/container/<container_name>/start", methods=["POST"])
+def start(container_name):
+    result = start_container(container_name)
+
+    if "error" in result:
+        return jsonify(result), 400
+
+    return jsonify(result), 200
+
+
+@app.route("/container/<container_name>/stop", methods=["POST"])
+def stop(container_name):
+    result = stop_container(container_name)
+
+    if "error" in result:
+        return jsonify(result), 400
+
+    return jsonify(result), 200
+
+
+@app.route("/container/<container_name>/restart", methods=["POST"])
+def restart(container_name):
+    result = restart_container(container_name)
+
+    if "error" in result:
+        return jsonify(result), 400
+
+    return jsonify(result), 200
+
 
 if __name__ == "__main__":
     app.run(port=5000)

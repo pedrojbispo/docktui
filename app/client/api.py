@@ -64,3 +64,23 @@ def get_projects():
     """
 
     return requests.get(f"{SERVER_URL}/projects")
+
+def start_container(container_name: str):
+    """
+    Send start container request.
+    """
+    return requests.post(f"{SERVER_URL}/container/{container_name}/start")
+
+
+def stop_container(container_name: str):
+    """
+    Send stop container request.
+    """
+    return requests.post(f"{SERVER_URL}/container/{container_name}/stop")
+
+
+def restart_container(container_name: str):
+    """
+    Send restart container request.
+    """
+    return requests.post(f"{SERVER_URL}/container/{container_name}/restart")

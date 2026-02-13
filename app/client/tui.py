@@ -10,7 +10,10 @@ from clicommands import (
     command_status,
     command_allstatus,
     command_logs,
-    command_list_projects
+    command_list_projects,
+    command_start,
+    command_stop,
+    command_restart
 )
 
 
@@ -32,7 +35,8 @@ def show_menu():
     print("3 - Delete project")
     print("4 - Status (all running containers)")
     print("5 - Logs")
-    print("6 - All status")
+    print("6 - Container management")  
+    print("7 - All status")
     print("0 - Exit\n")
 
 
@@ -123,8 +127,11 @@ def main_loop():
 
         elif option == "5":
             handle_logs()
-
+        
         elif option == "6":
+            container_management_menu()
+
+        elif option == "7":
             handle_allstatus()
 
         elif option == "0":
@@ -136,6 +143,43 @@ def main_loop():
 
         input("\nPress Enter to continue...")
 
+def container_management_menu():
+    """
+    Submenu for container management.
+    """
+
+    while True:
+        print("\n--- Container Management ---")
+        print("1 - Start container")
+        print("2 - Stop container")
+        print("3 - Restart container")
+        print("4 - List running containers")
+        print("5 - Back\n")
+
+        option = input("Select option: ")
+
+        if option == "1":
+            container_name = input("Container name: ")
+            command_start(container_name)
+
+        elif option == "2":
+            container_name = input("Container name: ")
+            command_stop(container_name)
+
+        elif option == "3":
+            container_name = input("Container name: ")
+            command_restart(container_name)
+
+        elif option == "4":
+            command_status()
+
+        elif option == "5":
+            break
+
+        else:
+            print("Invalid option.")
+
+        input("\nPress Enter to continue...")
 
 if __name__ == "__main__":
     main_loop()
