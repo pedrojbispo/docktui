@@ -35,7 +35,7 @@ def show_menu():
     print("3 - Delete project")
     print("4 - Status (all running containers)")
     print("5 - Logs")
-    print("6 - Container management")  
+    print("6 - Container management")
     print("7 - All status")
     print("0 - Exit\n")
 
@@ -53,7 +53,7 @@ def handle_modify():
     """
     Handle modify project interaction.
     """
-    
+
     print("\nAvailable projects:")
     command_list_projects()
 
@@ -86,7 +86,6 @@ def handle_allstatus():
     Handle status request.
     """
     command_allstatus()
-
 
 def handle_logs():
     """
@@ -127,7 +126,7 @@ def main_loop():
 
         elif option == "5":
             handle_logs()
-        
+
         elif option == "6":
             container_management_menu()
 

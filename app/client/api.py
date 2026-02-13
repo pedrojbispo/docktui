@@ -12,8 +12,8 @@ def create_project(project_name: str, compose_source: str):
     payload = {
         "project_name": project_name,
         "compose_source": compose_source
-        
-    } 
+
+    }
 
     return requests.post(f"{SERVER_URL}/create", json=payload, timeout=30)
 

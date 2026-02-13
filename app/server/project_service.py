@@ -3,7 +3,11 @@
 import os
 import subprocess
 from config import PROJECTS_DIRECTORY, DATASTORE_DIRECTORY
-from file_service import create_directory, copy_file, remove_directory
+from file_service import (
+    create_directory,
+    copy_file,
+    remove_directory
+)
 
 
 def create_project(project_name: str, compose_source: str):
@@ -19,10 +23,7 @@ def create_project(project_name: str, compose_source: str):
 
     copy_file(compose_source, destination_compose)
 
-    subprocess.run(
-        ["docker", "compose", "up", "-d"],
-        cwd=project_path
-    )
+    subprocess.run(["docker", "compose", "up", "-d"], cwd=project_path, check=False)
 
     return {"status": "created", "project": project_name}
 
@@ -63,7 +64,8 @@ def modify_project(project_name: str, compose_source: str):
             ["docker", "compose", "up", "-d"],
             cwd=project_path,
             capture_output=True,
-            text=True
+            text=True,
+            check=False
         )
 
         if result.returncode != 0:
@@ -77,7 +79,7 @@ def modify_project(project_name: str, compose_source: str):
             "project": project_name
         }
 
-    except Exception as error:
+    except ImportError as error:
         return {
             "error": "Unexpected server error",
             "details": str(error)
@@ -90,42 +92,19 @@ def delete_project(project_name: str):
 
     project_path = os.path.join(PROJECTS_DIRECTORY, project_name)
 
-    subprocess.run(
-        ["docker", "compose", "down"],
-        cwd=project_path
-    )
+    subprocess.run(["docker", "compose", "down"], cwd=project_path, check=False)
 
     remove_directory(project_path)
 
     return {"status": "deleted", "project": project_name}
 
 
-def project_status(project_name: str):
-    """
-    Get docker compose status for a project.
-    """
-
-    project_path = os.path.join(PROJECTS_DIRECTORY, project_name)
-
-    result = subprocess.run(
-        ["docker", "compose", "ps"],
-        cwd=project_path,
-        capture_output=True,
-        text=True
-    )
-
-    return result.stdout
-
 def docker_containers_status():
     """
     Get all docker containers status.
     """
 
-    result = subprocess.run(
-        ["docker", "ps", "-a"],
-        capture_output=True,
-        text=True
-    )
+    result = subprocess.run(["docker", "ps", "-a"], capture_output=True, text=True, check=False)
 
     return result.stdout
 

@@ -1,15 +1,15 @@
 """Module providing CLI Commands for the APP."""
 
 from api import (
-    create_project, 
-    modify_project, 
-    delete_project, 
-    get_status, 
-    get_allstatus, 
-    get_logs, 
-    get_projects, 
-    start_container, 
-    stop_container, 
+    create_project,
+    modify_project,
+    delete_project,
+    get_status,
+    get_allstatus,
+    get_logs,
+    get_projects,
+    start_container,
+    stop_container,
     restart_container
 )
 
@@ -53,7 +53,7 @@ def command_status():
 
 def command_allstatus():
     """
-    CLI status command.
+    CLI all status command.
     """
 
     response = get_allstatus()

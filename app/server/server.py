@@ -2,18 +2,17 @@
 
 from flask import Flask, request, jsonify
 from project_service import (
-    create_project, 
-    modify_project , 
-    delete_project, 
-    project_status, 
+    create_project,
+    modify_project,
+    delete_project,
     list_projects
 )
 from docker_service import (
-    list_containers, 
-    list_allcontainers, 
-    get_container_logs, 
-    start_container, 
-    stop_container, 
+    list_containers,
+    list_allcontainers,
+    get_container_logs,
+    start_container,
+    stop_container,
     restart_container
 )
 
@@ -72,7 +71,6 @@ def status():
 
     return jsonify(container_names)
 
-
 @app.route("/logs/<container_name>", methods=["GET"])
 def logs(container_name):
     """
@@ -106,6 +104,9 @@ def projects():
 
 @app.route("/container/<container_name>/start", methods=["POST"])
 def start(container_name):
+    """
+    Start Container.
+    """
     result = start_container(container_name)
 
     if "error" in result:
@@ -116,6 +117,9 @@ def start(container_name):
 
 @app.route("/container/<container_name>/stop", methods=["POST"])
 def stop(container_name):
+    """
+    Stop Container.
+    """
     result = stop_container(container_name)
 
     if "error" in result:
@@ -126,6 +130,9 @@ def stop(container_name):
 
 @app.route("/container/<container_name>/restart", methods=["POST"])
 def restart(container_name):
+    """
+    Restart Container.
+    """
     result = restart_container(container_name)
 
     if "error" in result:
