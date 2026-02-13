@@ -1,3 +1,5 @@
+"""Module providing project service."""
+
 import os
 import subprocess
 from config import PROJECTS_DIRECTORY, DATASTORE_DIRECTORY

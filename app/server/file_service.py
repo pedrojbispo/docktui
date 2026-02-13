@@ -1,3 +1,5 @@
+"""Module providing file service."""
+
 import os
 import shutil
 

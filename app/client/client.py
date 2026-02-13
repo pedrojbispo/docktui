@@ -1,3 +1,5 @@
+"""Module providing the client APP."""
+
 import argparse
 from clicommands import (
     command_create,

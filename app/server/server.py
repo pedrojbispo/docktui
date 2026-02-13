@@ -1,6 +1,21 @@
+"""Module providing server APP."""
+
 from flask import Flask, request, jsonify
-from project_service import create_project, modify_project , delete_project, project_status, list_projects
-from docker_service import list_containers, list_allcontainers, get_container_logs, start_container, stop_container, restart_container
+from project_service import (
+    create_project, 
+    modify_project , 
+    delete_project, 
+    project_status, 
+    list_projects
+)
+from docker_service import (
+    list_containers, 
+    list_allcontainers, 
+    get_container_logs, 
+    start_container, 
+    stop_container, 
+    restart_container
+)
 
 app = Flask(__name__)
 
@@ -121,5 +136,3 @@ def restart(container_name):
 
 if __name__ == "__main__":
     app.run(port=5000)
-
-

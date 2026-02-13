@@ -1,4 +1,17 @@
-from api import create_project, modify_project, delete_project, get_status, get_allstatus, get_logs, get_projects, start_container, stop_container, restart_container
+"""Module providing CLI Commands for the APP."""
+
+from api import (
+    create_project, 
+    modify_project, 
+    delete_project, 
+    get_status, 
+    get_allstatus, 
+    get_logs, 
+    get_projects, 
+    start_container, 
+    stop_container, 
+    restart_container
+)
 
 
 def command_create(project_name: str, compose_source: str):

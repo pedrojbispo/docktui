@@ -1,3 +1,5 @@
+"""Module providing docker service."""
+
 import docker
 
 # Create docker client
