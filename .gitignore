@@ -5,3 +5,4 @@ app/server/__pycache__/config.cpython-314.pyc
 app/server/__pycache__/docker_service.cpython-314.pyc
 app/server/__pycache__/file_service.cpython-314.pyc
 app/server/__pycache__/project_service.cpython-314.pyc
+client-store/
