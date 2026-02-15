@@ -1,7 +1,7 @@
 """Module providing the client APP."""
 
 import argparse
-from cli import (
+from commands import (
     command_create,
     command_modify,
     command_delete,
