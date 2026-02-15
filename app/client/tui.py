@@ -3,7 +3,7 @@ Terminal User Interface for dockcli.
 This module provides an interactive menu that calls CLI commands.
 """
 
-from clicommands import (
+from cli import (
     command_create,
     command_modify,
     command_delete,
