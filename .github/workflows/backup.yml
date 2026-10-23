@@ -1,0 +1,42 @@
+name: Back up Repositories to S3
+
+on: [push]
+
+jobs:
+  back-up:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        repo:
+          [
+            "https://github.com/pedrojbispo/docktui.git",
+            "https://$GITHUB_PAT@github.com/BDCC-2026/lab01_A035242.git"
+          ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+
+      - name: Install @larose/git-backup
+        run: npm install -g @larose/git-backup
+
+      - name: Back up ${{ matrix.repo }}
+        run: |
+          git-backup snapshot \
+            --repo ${{ matrix.repo }} \
+            --remote ${{ secrets.REMOTE }} \
+            --access-key-id ${{ secrets.ACCESS_KEY_ID }} \
+            --secret-access-key ${{ secrets.SECRET_ACCESS_KEY }}
+
+          git-backup prune \
+            --repo ${{ matrix.repo }} \
+            --remote ${{ secrets.REMOTE }} \
+            --access-key-id ${{ secrets.ACCESS_KEY_ID }} \
+            --secret-access-key ${{ secrets.SECRET_ACCESS_KEY }} \
+            --retention-policy "daily=4, weekly=2, monthly=1"
