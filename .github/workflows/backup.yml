@@ -4,38 +4,42 @@ on: [push]
 
 jobs:
   back-up:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
         repo:
           [
             "https://github.com/pedrojbispo/docktui.git",
-            "https://$GITHUB_PAT@github.com/BDCC-2026/lab01_A035242.git"
+            "https://$PAT@github.com/BDCC-2026/lab01_A035242.git"
           ]
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: "lts/*"
+          node-version: ">=26"
+          check-latest: true
 
       - name: Install @larose/git-backup
         run: npm install -g @larose/git-backup
 
       - name: Back up ${{ matrix.repo }}
+        env:
+          SECRET_PAT: ${{ secrets.PAT }} 
         run: |
+          FINAL_REPO_URL=$(echo "${{ matrix.repo }}" | sed "s|\$PAT|$SECRET_PAT|")
           git-backup snapshot \
-            --repo ${{ matrix.repo }} \
+            --repo $FINAL_REPO_URL \
             --remote ${{ secrets.REMOTE }} \
             --access-key-id ${{ secrets.ACCESS_KEY_ID }} \
             --secret-access-key ${{ secrets.SECRET_ACCESS_KEY }}
 
           git-backup prune \
-            --repo ${{ matrix.repo }} \
+            --repo $FINAL_REPO_URL \
             --remote ${{ secrets.REMOTE }} \
             --access-key-id ${{ secrets.ACCESS_KEY_ID }} \
             --secret-access-key ${{ secrets.SECRET_ACCESS_KEY }} \
