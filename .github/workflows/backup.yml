@@ -1,4 +1,4 @@
-name: Back up Repositories to S3
+name: Backup Repositories to S3
 
 on:
   schedule:
