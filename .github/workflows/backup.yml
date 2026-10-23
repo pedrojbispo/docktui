@@ -32,7 +32,6 @@ jobs:
           SECRET_PAT: ${{ secrets.PAT }} 
         run: |
           FINAL_REPO_URL=$(echo "${{ matrix.repo }}" | sed "s|__PAT_TOKEN__|$SECRET_PAT|")
-          echo -e "$FINAL_REPO_URL"
           git-backup snapshot \
             --repo $FINAL_REPO_URL \
             --remote ${{ secrets.REMOTE }} \
