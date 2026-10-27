@@ -1,0 +1,45 @@
+name: Backup Repositories to S3
+
+on: [push]
+
+jobs:
+  back-up:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        repo:
+          [
+            "https://__PAT_TOKEN__@github.com/BDCC-2026/lab02_A035242.git"
+          ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: ">=26"
+          check-latest: true
+
+      - name: Install @larose/git-backup
+        run: npm install -g @larose/git-backup
+
+      - name: Back up ${{ matrix.repo }}
+        env:
+          SECRET_PAT: ${{ secrets.PAT }} 
+        run: |
+          FINAL_REPO_URL=$(echo "${{ matrix.repo }}" | sed "s|__PAT_TOKEN__|$SECRET_PAT|")
+          git-backup snapshot \
+            --repo $FINAL_REPO_URL \
+            --remote ${{ secrets.REMOTE2 }} \
+            --access-key-id ${{ secrets.ACCESS_KEY_ID2 }} \
+            --secret-access-key ${{ secrets.SECRET_ACCESS_KEY2 }}
+
+          git-backup prune \
+            --repo $FINAL_REPO_URL \
+            --remote ${{ secrets.REMOTE2 }} \
+            --access-key-id ${{ secrets.ACCESS_KEY_ID2 }} \
+            --secret-access-key ${{ secrets.SECRET_ACCESS_KEY2 }} \
+            --retention-policy "daily=4, weekly=2, monthly=1"
