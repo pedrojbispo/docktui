@@ -1,5 +1,5 @@
 # docktui
-ADS Academic Project
+ADS Academic Project (Finished)
 
 Objectivo: Criar e desenvolver um ferramenta TUI (Text User Interface) que interage e orchestra um maquina/servidor com docker
 Criar Docker containers, remover docker containers, verificar o status dos docker containers atravez de uma API
