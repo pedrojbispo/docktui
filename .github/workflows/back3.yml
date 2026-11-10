@@ -1,0 +1,69 @@
+name: Backup Repositories to CGP Cloud Storage.
+
+on: 
+  push:
+  workflow_dispatch:
+
+jobs:
+  back-up:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        repo_name:
+          [
+            "lab02_A035242"
+          ]
+        include:
+          - repo_name: "lab02_A035242"
+            repo_url: "https://__PAT_TOKEN__@github.com/BDCC-2026/lab02_A035242.git"
+        
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Google Cloud Authentication
+        uses: 'google-github-actions/auth@v3'
+        with:
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: ">=26"
+          check-latest: true
+
+      - name: Install @larose/git-backup
+        run: npm install -g @larose/git-backup
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+      
+      - name: Bucket Folder Check
+        run: |
+          gcloud info
+          if gcloud storage ls gs://exo-buck4/${{ matrix.repo_name }} then
+            echo -e "Folder ${{ matrix.repo_name }} exists... Skipping.../n"
+          else
+            echo -e "Folder ${{ matrix.repo_name }} does not exists... Creating.../n""
+            gcloud storage folders create --recursive gs://exo-buck4/${{ matrix.repo_name }}/
+          fi
+
+      - name: Back up ${{ matrix.repo_name }}
+        env:
+          SECRET_PAT: ${{ secrets.PAT }}
+        run: |
+          FINAL_REPO_URL=$(echo "${{ matrix.repo_url }}" | sed "s|__PAT_TOKEN__|$SECRET_PAT|")
+          git-backup snapshot \
+            --repo $FINAL_REPO_URL \
+            --remote ${{ secrets.REMOTE }}/${{ matrix.repo_name }}/ \
+            --access-key-id ${{ secrets.ACCESS_KEY_ID }} \
+            --secret-access-key ${{ secrets.SECRET_ACCESS_KEY }}
+
+          git-backup prune \
+            --repo $FINAL_REPO_URL \
+            --remote ${{ secrets.REMOTE }}/${{ matrix.repo_name }}/ \
+            --access-key-id ${{ secrets.ACCESS_KEY_ID }} \
+            --secret-access-key ${{ secrets.SECRET_ACCESS_KEY }} \
+            --retention-policy "daily=7, weekly=4, monthly=3"
