@@ -23,11 +23,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Google Cloud Authentication
-        uses: 'google-github-actions/auth@v3'
-        with:
-          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
-
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
@@ -36,19 +31,6 @@ jobs:
 
       - name: Install @larose/git-backup
         run: npm install -g @larose/git-backup
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v3
-      
-      - name: Bucket Folder Check
-        run: |
-          gcloud info
-          if gcloud storage ls gs://exo-buck4/${{ matrix.repo_name }}; then
-            echo -e "Folder ${{ matrix.repo_name }} exists... Skipping.../n"
-          else
-            echo -e "Folder ${{ matrix.repo_name }} does not exists... Creating.../n"
-            gcloud storage folders create --recursive gs://exo-buck4/${{ matrix.repo_name }}/
-          fi
 
       - name: Back up ${{ matrix.repo_name }}
         env:
