@@ -43,7 +43,7 @@ jobs:
       - name: Bucket Folder Check
         run: |
           gcloud info
-          if gcloud storage ls gs://exo-buck4/${{ matrix.repo_name }} then
+          if gcloud storage ls gs://exo-buck4/${{ matrix.repo_name }}; then
             echo -e "Folder ${{ matrix.repo_name }} exists... Skipping.../n"
           else
             echo -e "Folder ${{ matrix.repo_name }} does not exists... Creating.../n""
