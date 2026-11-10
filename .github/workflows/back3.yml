@@ -46,7 +46,7 @@ jobs:
           if gcloud storage ls gs://exo-buck4/${{ matrix.repo_name }}; then
             echo -e "Folder ${{ matrix.repo_name }} exists... Skipping.../n"
           else
-            echo -e "Folder ${{ matrix.repo_name }} does not exists... Creating.../n""
+            echo -e "Folder ${{ matrix.repo_name }} does not exists... Creating.../n"
             gcloud storage folders create --recursive gs://exo-buck4/${{ matrix.repo_name }}/
           fi
 
