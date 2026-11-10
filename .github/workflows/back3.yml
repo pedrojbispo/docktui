@@ -57,13 +57,13 @@ jobs:
           FINAL_REPO_URL=$(echo "${{ matrix.repo_url }}" | sed "s|__PAT_TOKEN__|$SECRET_PAT|")
           git-backup snapshot \
             --repo $FINAL_REPO_URL \
-            --remote ${{ secrets.REMOTE }}/${{ matrix.repo_name }}/ \
+            --remote ${{ secrets.REMOTE }}/${{ matrix.repo_name }} \
             --access-key-id ${{ secrets.ACCESS_KEY_ID }} \
             --secret-access-key ${{ secrets.SECRET_ACCESS_KEY }}
 
           git-backup prune \
             --repo $FINAL_REPO_URL \
-            --remote ${{ secrets.REMOTE }}/${{ matrix.repo_name }}/ \
+            --remote ${{ secrets.REMOTE }}/${{ matrix.repo_name }} \
             --access-key-id ${{ secrets.ACCESS_KEY_ID }} \
             --secret-access-key ${{ secrets.SECRET_ACCESS_KEY }} \
             --retention-policy "daily=7, weekly=4, monthly=3"
