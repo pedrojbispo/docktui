@@ -14,7 +14,8 @@ jobs:
         repo:
           [
             "https://github.com/pedrojbispo/docktui.git",
-            "https://__PAT_TOKEN__@github.com/BDCC-2026/lab01_A035242.git"
+            "https://__PAT_TOKEN__@github.com/BDCC-2026/lab01_A035242.git",
+            "https://__PAT_TOKEN__@github.com/pedrojbispo/programming-practice.git"
           ]
 
     steps:
